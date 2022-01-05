@@ -1,0 +1,3 @@
+{
+  "mongoURI": "mongodb+srv://minishop:provider@clusterone.z0bgh.mongodb.net/shop?retryWrites=true&w=majority"
+}
