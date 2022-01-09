@@ -4,9 +4,7 @@ const Product = require("../models/products");
 router.get("/", async (req, res) => {
   try {
     const getProducts = await Product.find({});
-    if (getProducts.length < 1) {
-      res.status(200).json("no Product");
-    } else {
+    if (getProducts.length > 0) {
       res.status(200).json(getProducts);
     }
   } catch (error) {
@@ -15,6 +13,7 @@ router.get("/", async (req, res) => {
 });
 router.post("/", async (req, res) => {
   const { name, description, image, category, features, price } = req.body;
+  console.log(req.body, 36);
   const product = new Product({
     name,
     description,
@@ -22,12 +21,14 @@ router.post("/", async (req, res) => {
     category,
     features,
     price,
+    mytimestamp: Date.now(),
   });
   try {
     const saveProduct = await product.save();
-    res.status(200).json(saveProduct);
-  } catch (error) {
-    res.json(error);
+    res.status(200).json({ saveProduct });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
   }
 });
 router.delete("/", async (req, res) => {
