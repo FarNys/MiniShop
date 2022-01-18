@@ -31,13 +31,28 @@ router.post("/", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-router.delete("/", async (req, res) => {
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
   try {
-    await Product.deleteMany({});
-    res.status(200).json("All Product Deleted");
+    await Product.findByIdAndDelete(id);
+    res.status(200).json(`Product with id:${id} deleted`);
   } catch (error) {
     res.status(500).json("Something Went WronG");
   }
 });
-
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  try {
+    const product = await Product.findById(id);
+    if (!product) {
+      res.status(404).json("no product found");
+    } else {
+      res.status(200).json(product);
+    }
+  } catch (error) {
+    res.status(500).json("Something Went WronG");
+  }
+});
 module.exports = router;
